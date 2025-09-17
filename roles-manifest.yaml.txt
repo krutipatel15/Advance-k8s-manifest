@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role #clusterRole
+metadata:
+  name: nabula-role
+  namespace: nabula-prod-namespace
+rules:
+  - apigroups: ["apps"]
+    resources: ["deployment"]
+    verbs: ["create", "get", "watch", "list"]
+  - apigroups: ["apps"]
+    resources: ["pods", "endpoints", "services"]
+    verbs: ["get", "watch", "list", "delete"]

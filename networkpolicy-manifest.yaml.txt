@@ -1,0 +1,31 @@
+apiVersion:networking.k8s.io/v1
+kind: networkingPolicy
+metadata:
+  name: nabula-netpolicy
+  namespace: nabula-prod-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app:nabula-prod
+policyType:
+  - Ingress
+  - egrees
+ingress:
+  from:
+    - podSelector:
+        matchLables:
+          app: nabula-prod
+    - namespaceSelector:
+        matchLables:
+          name: nebula-prod-namespace
+  ports: 
+    - protocol: TCP
+      port: 3000
+egress:
+  - to:
+     - podSelector:
+         matchLabels:
+           component: postgres
+    ports:
+      - protocol: TCP
+          port: 5432
