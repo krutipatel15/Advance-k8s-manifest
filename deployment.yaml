@@ -14,7 +14,9 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nabula-node
+      app.kubernetes.io/name: nabula-node
+    matchexpressions:
+      - { key: environment, operator: NotIn, values: [dev,test] }
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -24,6 +26,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: nabula-node
+        environment: production
     spec:
       serviceAccountName: nabula-sa
       imagePullSecrets:
