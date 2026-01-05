@@ -4,26 +4,26 @@ metadata:
   name: nabula-node
   namespace: nabula-prod-namespace
   labels:
-    app: nebula-nod
+    app: nabula-node
     environment: production
 spec:
-  replica: 3
+  replicas: 3
   selector:
-    matchlabels:
+    matchLabels:
       app: nabula-node
   strategy:
-    type: rollingupdate
-    rollingupdate:
-      maxunavailable: 1
-      maxsurge: 1
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: nabula-node
     spec:
-      serviceAccountname: nabula-sa
-      imagePullSecrets:    
-        name: nabula-prod-secret
+      serviceAccountName: nabula-sa
+      imagePullSecrets:
+        - name: nabula-prod-secret
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -38,60 +38,60 @@ spec:
             runAsUser: 0
             runAsGroup: 0
       containers:
-        name: nebula
-	image: "ghcr.io/example/nebula-node@sha256:IMAGE_WITH_DIGEST"
-	imagePullPolicy: IfNotPresent
-       ports:
-	- containerPort: 3000
- 	  name: http
- 	  protocol: TCP
-       envFrom:
-	- configMapRef:
-  	  name: nebula-config
-       env:
-	- name: DB_HOST
- 	  value: "postgres.nebula.svc.cluster.local"
-        - name: 
-	    valueFrom:
-    	      configMapKeyRef:
-              name: nebula-config
-              key: NODE_ENV
-   	- name: SECRET_TOKEN
-  	    valueFrom:
-              secretKeyRef:
-                name: nebula-app-secret
-                key: token
-	resources:
-  	  requests:
-    	    cpu: "250m"
-    	    memory: 512Mi
-	  limits:
-  	    cpu: "1000m"
-    	    memory: 1Gi
-     	readinessProbe:
- 	    httpGet:
-            path: /health
-       	    port: http
-  	    initialDelaySeconds: 10
-   	    periodSeconds: 10
-  	    failureThreshold: 3
-  	    successThreshold: 1
- 	    timeoutSeconds: 5
-	livenessProbe:
-  	  httpGet:
-   	    path: /live
-       	    port: http
-  	    initialDelaySeconds: 30
-  	    periodSeconds: 20
-  	    failureThreshold: 3
-  	    timeoutSeconds: 5
-        volumeMounts:
-	  - name: app-data
-	    mountPath: /var/lib/nebula
-	    subPath: data
-	  - name: logs
-	    mountPath: /var/log/nebula
-	    readOnly: false
+        - name: nebula
+          image: "ghcr.io/example/nebula-node@sha256:IMAGE_WITH_DIGEST"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: nebula-config
+          env:
+            - name: DB_HOST
+              value: "postgres.nebula.svc.cluster.local"
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: nebula-config
+                  key: NODE_ENV
+            - name: SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: nebula-app-secret
+                  key: token
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: app-data
+              mountPath: /var/lib/nebula
+              subPath: data
+            - name: logs
+              mountPath: /var/log/nebula
+              readOnly: false
       volumes:
         - name: app-data
           emptyDir: {}
