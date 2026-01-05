@@ -4,7 +4,9 @@ metadata:
   name: nabula-node
   namespace: nabula-prod-namespace
   labels:
-    app: nabula-node
+    app.kubernetes.io/name: nabula-node
+    app.kubernetes.io/version: "4.9.4"
+    app.kubernetes.io/managed-by: Helm
     environment: production
 spec:
   replicas: 3
@@ -19,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: nabula-node
+        app.kubernetes.io/name: nabula-node
     spec:
       serviceAccountName: nabula-sa
       imagePullSecrets:

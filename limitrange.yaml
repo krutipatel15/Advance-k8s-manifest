@@ -1,4 +1,4 @@
-apiVersion:v1
+apiVersion: v1
 kind: limitRange
 metadata:
   name: nabula-prod-namespace

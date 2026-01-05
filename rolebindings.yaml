@@ -1,12 +1,13 @@
-apiVersion:v1
+apiVersion: v1
 kind: RoleBindings
 metadata:
   name: nabula-rb
   namespace: nabula-prod-namespace
   labels:
+    app.kubernetes.io/name: nabula-node
     environment: production
 roleRef:
-  apigroup:rbac.authorization.k8s.io
+  apigroup: rbac.authorization.k8s.io
   kind: role
   name: nabula-role
 subject:

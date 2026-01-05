@@ -4,7 +4,7 @@ metadata:
   name: nabula-node-lb
   namespace: nabula-prod-namespace
   labels:
-    app: nabula-node
+    app.kubernetes.io/name: nabula-node
     environment: production
   finalizers:
     - service.kubernetes.io/load-balancer-cleanup
