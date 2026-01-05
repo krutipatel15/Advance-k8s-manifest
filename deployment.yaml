@@ -5,8 +5,10 @@ metadata:
   namespace: nabula-prod-namespace
   labels:
     app.kubernetes.io/name: nabula-node
+    app.kubernetes.io/instance: nabula-prod
     app.kubernetes.io/version: "4.9.4"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: server
     environment: production
 spec:
   replicas: 3
